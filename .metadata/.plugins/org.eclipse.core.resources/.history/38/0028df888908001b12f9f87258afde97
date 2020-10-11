@@ -1,0 +1,55 @@
+package com.tutorial.springboot.cruddemo.dao;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.tutorial.springboot.cruddemo.entity.Employee;
+
+@Repository
+public class EmployeeDAOHibernateImpl implements EmployeeDAO {
+	
+	
+	private EntityManager entityManager;
+
+	@Autowired
+	public EmployeeDAOHibernateImpl(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	@Override
+	public List<Employee> findAll() {
+Query thequery=entityManager.createQuery("from Employee");
+		List<Employee> list= thequery.getResultList();
+		
+		return list;
+		
+	}
+
+	@Override
+	public Employee findById(int empId) {
+		Employee thequery = entityManager.find(Employee.class, empId);
+		return thequery;
+	}
+
+	@Override
+	public void save(Employee emp) {
+		
+		entityManager.p(emp);
+	}
+
+	@Override
+	public void deleteById(int empId) {
+		Session currentsession= entityManager.unwrap(Session.class);
+		Query thequery=currentsession.createQuery("from Employee where id=:Id");
+		thequery.setParameter("Id", empId);
+		thequery.executeUpdate();
+		
+	}
+
+}

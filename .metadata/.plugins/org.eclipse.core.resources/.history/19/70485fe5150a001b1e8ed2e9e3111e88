@@ -1,0 +1,5 @@
+package com.tutorial.springboot.cruddemo.swagger;
+
+public class SwagerConfig {
+
+}
